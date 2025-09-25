@@ -190,8 +190,8 @@ function build() {
     // Generate HTML
     if (fs.existsSync('./template.html')) {
         const html = generateHTML(modules);
-        fs.writeFileSync(path.join(config.outputDir, 'index.html'), html);
-        console.log('🌐 Generated index.html');
+        fs.writeFileSync(path.join(config.outputDir, 'bi-course-site-updated.html'), html);
+        console.log('🌐 Generated bi-course-site-updated.html');
     }
     
     // Copy static assets if they exist
