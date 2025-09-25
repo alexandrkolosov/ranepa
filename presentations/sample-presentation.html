@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лекция 1: Что такое Business Intelligence?</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .presentation-container {
+            width: 95%;
+            max-width: 1200px;
+            aspect-ratio: 16/9;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: 60px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.5s ease;
+        }
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .slide h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+            color: #1a202c;
+        }
+        .slide h2 {
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            color: #2d3748;
+        }
+        .slide p {
+            font-size: 1.5em;
+            line-height: 1.6;
+            color: #4a5568;
+            margin-bottom: 1em;
+        }
+        .slide ul {
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #4a5568;
+            padding-left: 1.5em;
+        }
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+        .controls button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .controls button:hover {
+            background: #5a67d8;
+        }
+        .controls button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: #718096;
+            font-size: 14px;
+        }
+        .title-slide {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        .title-slide h1 { color: white; }
+        .title-slide p { color: rgba(255,255,255,0.9); }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-number">
+            <span id="current-slide">1</span> / <span id="total-slides">5</span>
+        </div>
+        
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Business Intelligence</h1>
+            <p>Введение в мир принятия решений на основе данных</p>
+            <p style="margin-top: 2em; font-size: 1em;">RANEPA • 2025</p>
+        </div>
+        
+        <!-- Slide 2: Definition -->
+        <div class="slide">
+            <h2>Что такое Business Intelligence?</h2>
+            <p>Business Intelligence (BI) — это технологии, приложения и практики для сбора, интеграции, анализа и представления бизнес-информации.</p>
+            <ul>
+                <li>Превращение данных в инсайты</li>
+                <li>Поддержка принятия решений</li>
+                <li>Оптимизация бизнес-процессов</li>
+                <li>Конкурентное преимущество через аналитику</li>
+            </ul>
+        </div>
+        
+        <!-- Slide 3: Evolution -->
+        <div class="slide">
+            <h2>Эволюция BI</h2>
+            <ul>
+                <li><strong>1960s:</strong> Management Information Systems (MIS)</li>
+                <li><strong>1970s:</strong> Decision Support Systems (DSS)</li>
+                <li><strong>1980s:</strong> Executive Information Systems (EIS)</li>
+                <li><strong>1990s:</strong> OLAP и Data Warehousing</li>
+                <li><strong>2000s:</strong> Real-time BI и Dashboards</li>
+                <li><strong>2010s:</strong> Self-service BI и Big Data</li>
+                <li><strong>2020s:</strong> AI-powered BI и Augmented Analytics</li>
+            </ul>
+        </div>
+        
+        <!-- Slide 4: Components -->
+        <div class="slide">
+            <h2>Компоненты BI экосистемы</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2em;">
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 0.5em;">Технологии</h3>
+                    <ul>
+                        <li>Data Warehouses</li>
+                        <li>ETL процессы</li>
+                        <li>OLAP кубы</li>
+                        <li>Visualization tools</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: #764ba2; margin-bottom: 0.5em;">Процессы</h3>
+                    <ul>
+                        <li>Data Governance</li>
+                        <li>Data Quality Management</li>
+                        <li>Analytics Workflows</li>
+                        <li>Reporting Cycles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: Summary -->
+        <div class="slide">
+            <h2>Ключевые выводы</h2>
+            <ul>
+                <li>BI — это не просто технология, а стратегический подход</li>
+                <li>Успешное внедрение требует изменения культуры</li>
+                <li>ROI от BI может достигать 1300% (Nucleus Research)</li>
+                <li>Будущее за augmented analytics и AI</li>
+            </ul>
+            <p style="margin-top: 2em; text-align: center; color: #667eea;">
+                <strong>Вопросы для размышления:</strong><br>
+                Как BI может трансформировать вашу индустрию?
+            </p>
+        </div>
+        
+        <!-- Controls -->
+        <div class="controls">
+            <button id="prev-btn" onclick="changeSlide(-1)">← Назад</button>
+            <button id="next-btn" onclick="changeSlide(1)">Вперед →</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+        
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            document.getElementById('prev-btn').disabled = currentSlide === 0;
+            document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
+        }
+        
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+        
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

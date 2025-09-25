@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бизнес Разведка для менеджеров | РАНХиГС</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .prose h2 { margin-top: 2rem; margin-bottom: 1rem; }
+        .prose h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .module-card {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        .module-card:hover {
+            border-left-color: #2563eb;
+            transform: translateX(4px);
+        }
+        .content-fade {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-50" x-data="courseApp()">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-xl font-semibold text-gray-900">Бизнес Разведка</h1>
+                    <span class="text-sm text-gray-500">РАНХиГС • 2025</span>
+                </div>
+                <nav class="flex items-center space-x-6">
+                    <a href="#modules" class="text-sm text-gray-600 hover:text-gray-900">Модули</a>
+                    <a href="#resources" class="text-sm text-gray-600 hover:text-gray-900">Материалы</a>
+                    <a href="#about" class="text-sm text-gray-600 hover:text-gray-900">О курсе</a>
+                    <a href="https://t.me/alexandrkolosov" target="_blank" class="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                        Telegram
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Sidebar -->
+            <aside class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-sm p-6 sticky top-24">
+                    <h2 class="font-semibold text-gray-900 mb-4">Содержание курса</h2>
+                    <nav class="space-y-1">
+                        <template x-for="(module, index) in modules" :key="index">
+                            <button 
+                                @click="selectModule(index)"
+                                :class="{'bg-blue-50 text-blue-700 border-blue-200': currentModule === index, 'text-gray-600 hover:text-gray-900 hover:bg-gray-50': currentModule !== index}"
+                                class="module-card w-full text-left px-3 py-2 rounded-lg border border-transparent text-sm transition"
+                            >
+                                <div class="flex items-center justify-between">
+                                    <span x-text="`${index + 1}. ${module.title}`"></span>
+                                    <span x-show="module.completed" class="text-green-500">✔</span>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1" x-text="`${module.lectures.length} лекций`"></div>
+                            </button>
+                        </template>
+                    </nav>
+                    
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-900 mb-3">Прогресс</h3>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" :style="`width: ${progress}%`"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2" x-text="`${completedLectures} из ${totalLectures} лекций`"></p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="lg:col-span-3">
+                <!-- Module Header -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6 content-fade">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900" x-text="modules[currentModule].title"></h2>
+                            <p class="text-gray-600 mt-2" x-text="modules[currentModule].description"></p>
+                        </div>
+                        <span class="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full" x-text="`Модуль ${currentModule + 1}`"></span>
+                    </div>
+                </div>
+
+                <!-- Lectures List -->
+                <div class="space-y-4">
+                    <template x-for="(lecture, lectureIndex) in modules[currentModule].lectures" :key="lectureIndex">
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden content-fade">
+                            <div class="p-6">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex-1">
+                                        <h3 class="text-lg font-semibold text-gray-900" x-text="lecture.title"></h3>
+                                        <p class="text-sm text-gray-600 mt-1" x-text="lecture.description"></p>
+                                        <div class="flex items-center space-x-4 mt-3 text-sm text-gray-500">
+                                            <span x-text="`${lecture.duration} мин`"></span>
+                                            <span>•</span>
+                                            <span x-text="lecture.type"></span>
+                                        </div>
+                                    </div>
+                                    <button 
+                                        @click="toggleLecture(lecture)"
+                                        :class="{'bg-green-100 text-green-700': lecture.completed, 'bg-gray-100 text-gray-700': !lecture.completed}"
+                                        class="px-3 py-1 text-sm rounded-full"
+                                    >
+                                        <span x-text="lecture.completed ? 'Завершено' : 'Не просмотрено'"></span>
+                                    </button>
+                                </div>
+
+                                <!-- Content Links -->
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
+                                    <!-- Video Link -->
+                                    <a :href="lecture.videoUrl" target="_blank" 
+                                       x-show="lecture.videoUrl"
+                                       class="flex items-center justify-center px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition group">
+                                        <svg class="w-5 h-5 mr-2 text-gray-600 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium">Видео лекция</span>
+                                    </a>
+
+                                    <!-- Presentation -->
+                                    <a :href="lecture.presentationUrl" target="_blank" 
+                                       x-show="lecture.presentationUrl"
+                                       class="flex items-center justify-center px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition group">
+                                        <svg class="w-5 h-5 mr-2 text-gray-600 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium">Презентация</span>
+                                    </a>
+
+                                    <!-- Materials -->
+                                    <a :href="lecture.materialsUrl" download
+                                       x-show="lecture.materialsUrl"
+                                       class="flex items-center justify-center px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition group">
+                                        <svg class="w-5 h-5 mr-2 text-gray-600 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium">Материалы</span>
+                                    </a>
+                                </div>
+
+                                <!-- Additional Resources -->
+                                <div x-show="lecture.resources && lecture.resources.length > 0" class="mt-4 pt-4 border-t border-gray-100">
+                                    <h4 class="text-sm font-medium text-gray-700 mb-2">Дополнительные ресурсы:</h4>
+                                    <div class="space-y-1">
+                                        <template x-for="resource in lecture.resources" :key="resource.title">
+                                            <a :href="resource.url" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 flex items-center">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                </svg>
+                                                <span x-text="resource.title"></span>
+                                            </a>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function courseApp() {
+            return {
+                currentModule: 0,
+                modules: [
+                    {
+                        title: "Основы Business Intelligence",
+                        description: "Введение в концепции BI, роль данных в принятии решений, обзор инструментов",
+                        completed: false,
+                        lectures: [
+                            {
+                                title: "Что такое Business Intelligence?",
+                                description: "История развития BI, ключевые концепции, применение в современном бизнесе",
+                                duration: 45,
+                                type: "Лекция",
+                                completed: false,
+                                videoUrl: "https://youtube.com/watch?v=example1",
+                                presentationUrl: "",
+                                materialsUrl: "",
+                                resources: [
+                                    { title: "Harvard Business Review: BI Fundamentals", url: "https://hbr.org/example" },
+                                    { title: "Gartner Magic Quadrant for BI", url: "https://gartner.com/example" }
+                                ]
+                            },
+                            {
+                                title: "Экосистема Business Intelligence",
+                                description: "Роли в BI, различия BI vs Analytics vs Data Science, кейсы Amazon и Wildberries",
+                                duration: 120,
+                                type: "Лекция",
+                                completed: false,
+                                videoUrl: "https://youtube.com/watch?v=example2",
+                                presentationUrl: "",
+                                materialsUrl: "",
+                                resources: [
+                                    { title: "McKinsey: The Age of Analytics", url: "https://mckinsey.com/analytics" },
+                                    { title: "Amazon's Data Strategy", url: "https://aws.amazon.com/big-data" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        title: "От интуиции к данным",
+                        description: "Методологии принятия решений на основе данных, Tableau и практика",
+                        completed: false,
+                        lectures: [
+                            {
+                                title: "Business Intelligence: От интуиции к данным",
+                                description: "Цикл BI, архитектура систем, регистрация в Tableau Public, практические кейсы SwiftDrive и YoYo Mobility",
+                                duration: 90,
+                                type: "Интерактивная презентация",
+                                completed: false,
+                                videoUrl: "",
+                                presentationUrl: "bi-lecture-1-final.html",
+                                materialsUrl: "",
+                                resources: [
+                                    { title: "Tableau Public: Регистрация", url: "https://public.tableau.com" },
+                                    { title: "The Beauty of Data Visualization (TED)", url: "https://www.youtube.com/watch?v=jSmJpMIearM" },
+                                    { title: "Tableau Book of Calcs", url: "https://public.tableau.com/app/profile/tableau.book.of.calcs" }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                
+                get totalLectures() {
+                    return this.modules.reduce((total, module) => total + module.lectures.length, 0);
+                },
+                
+                get completedLectures() {
+                    return this.modules.reduce((total, module) => 
+                        total + module.lectures.filter(l => l.completed).length, 0);
+                },
+                
+                get progress() {
+                    return this.totalLectures > 0 ? Math.round((this.completedLectures / this.totalLectures) * 100) : 0;
+                },
+                
+                selectModule(index) {
+                    this.currentModule = index;
+                    // Save to localStorage
+                    localStorage.setItem('currentModule', index);
+                },
+                
+                toggleLecture(lecture) {
+                    lecture.completed = !lecture.completed;
+                    // Save progress to localStorage
+                    this.saveProgress();
+                },
+                
+                saveProgress() {
+                    const progress = this.modules.map(module => ({
+                        completed: module.completed,
+                        lectures: module.lectures.map(l => ({ completed: l.completed }))
+                    }));
+                    localStorage.setItem('courseProgress', JSON.stringify(progress));
+                },
+                
+                loadProgress() {
+                    const saved = localStorage.getItem('courseProgress');
+                    if (saved) {
+                        const progress = JSON.parse(saved);
+                        progress.forEach((moduleProgress, i) => {
+                            if (this.modules[i]) {
+                                this.modules[i].completed = moduleProgress.completed;
+                                moduleProgress.lectures.forEach((lectureProgress, j) => {
+                                    if (this.modules[i].lectures[j]) {
+                                        this.modules[i].lectures[j].completed = lectureProgress.completed;
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    
+                    const savedModule = localStorage.getItem('currentModule');
+                    if (savedModule) {
+                        this.currentModule = parseInt(savedModule);
+                    }
+                },
+                
+                init() {
+                    this.loadProgress();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
