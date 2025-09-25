@@ -1,10 +1,4 @@
 {
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/bi-course-site-updated.html"
-    }
-  ],
   "rewrites": [
     {
       "source": "/",
